@@ -1,28 +1,46 @@
-const bestSum = (targetSum, numbers, memo = {}) => {
-    if (targetSum in memo) return memo[targetSum];
-    if (targetSum === 0) return []
-    if (targetSum < 0) return null;
+const canConstruct = (target, wordBank, memo={}) => {
+    if (target in memo) return memo[target]
+    if (target === '')  return true
+    
 
-    let shortestCombination = null;
-
-    for (let num of numbers) {
-        const remainder = targetSum - num;
-        const remainderCombination = bestSum(remainder, numbers, memo);
-        if (remainderCombination !== null) {
-            const combination = [...remainderCombination, num]
-            if (shortestCombination === null || combination.length < shortestCombination.length) {
-                shortestCombination = combination;
+    for (let word of wordBank) {
+        if (target.indexOf(word) === 0) {
+            const suffix = target.slice(word.length);
+            if (canConstruct(suffix, wordBank, memo) === true) {
+                memo[target] = true
+                return true
             }
         }
     }
 
-    memo[targetSum] = shortestCombination;
-    return shortestCombination;
+    memo[target] = false
+    return false
 }
 
-//console.log(bestSum(7, [5, 3, 4, 7]));
-//console.log(bestSum(8, [2, 3, 5]));
-console.log(bestSum(100, [1,2, 5, 25]));
+console.log(canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ['e', 'ee', 'eee', 'eeee', 'eeeee', 'eeeeee']))
+
+// const bestSum = (targetSum, numbers, memo = {}) => {
+//     if (targetSum in memo) return memo[targetSum];
+//     if (targetSum === 0) return []
+//     if (targetSum < 0) return null;
+
+//     let shortestCombination = null;
+
+//     for (let num of numbers) {
+//         const remainder = targetSum - num;
+//         const remainderCombination = bestSum(remainder, numbers, memo);
+//         if (remainderCombination !== null) {
+//             const combination = [...remainderCombination, num]
+//             if (shortestCombination === null || combination.length < shortestCombination.length) {
+//                 shortestCombination = combination;
+//             }
+//         }
+//     }
+
+//     memo[targetSum] = shortestCombination;
+//     return shortestCombination;
+// }
+
 
 // const howSum = (targetSum, numbers, memo = {}) => {
 //     if (targetSum in memo) return memo[targetSum];
